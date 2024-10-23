@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" /> <!-- Accessing step decteor and acceloremeter data -->
+    <uses-feature
+        android:name="android.hardware.sensor.stepdetector"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" /> <!-- Enable Permission -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DataCollectionForDrinking">
+        <activity
+            android:name=".presentation.ActivitySelectionScreen"
+            android:exported="false"
+            android:taskAffinity="" />
+        <activity
+            android:name=".presentation.TestAccelerometer"
+            android:exported="false"
+            android:taskAffinity="" />
+        <activity
+            android:name=".presentation.SaveOrRestartActivity"
+            android:exported="false"
+            android:taskAffinity="" />
+        <activity
+            android:name=".presentation.CollectAccelerometerData"
+            android:exported="false"
+            android:taskAffinity="" />
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".presentation.MainActivity"
+            android:exported="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

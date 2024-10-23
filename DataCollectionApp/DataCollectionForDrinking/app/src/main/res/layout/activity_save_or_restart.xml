@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_selection_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.SaveOrRestartActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_Start"
+        android:layout_width="121dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button_Save"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Save"
+            tools:ignore="HardcodedText" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_Restart"
+        android:layout_width="121dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cv_Start"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/cv_Start"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button_Restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Restart"
+            tools:ignore="HardcodedText" />
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
