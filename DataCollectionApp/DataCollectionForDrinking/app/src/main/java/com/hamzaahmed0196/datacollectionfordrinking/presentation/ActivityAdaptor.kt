@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamzaahmed0196.datacollectionfordrinking.databinding.ItemRowBinding
 
 
-class ActivityAdaptor (private val items: MutableList<ActivityModel>) :
+class ActivityAdaptor (
+    private val items: MutableList<ActivityModel>,
+    private val onItemClick : (String) -> Unit // pass the selected activity to the activity selection screen
+    ) :
     RecyclerView.Adapter<ActivityAdaptor.ViewHolder>() {
         private lateinit var binding : ItemRowBinding
 
@@ -27,6 +30,10 @@ class ActivityAdaptor (private val items: MutableList<ActivityModel>) :
             binding.apply {
                 textView.text = item.name
                 imageView.setImageResource(item.image)
+            }
+            // Set On Click Listener for item
+            itemView.setOnClickListener {
+                onItemClick(item.name)
             }
         }
     }

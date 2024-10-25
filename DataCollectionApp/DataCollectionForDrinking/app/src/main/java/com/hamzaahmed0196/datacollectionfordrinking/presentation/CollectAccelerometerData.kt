@@ -11,56 +11,58 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
 
 class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
-
+    
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private val accelerometerData = mutableListOf<String>()
     private lateinit var timerTextView: TextView
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var sharedPrefs : SharedPreferences
-    // private val Tag : String = "CollectAccelData"
-    private var Tag : String = "Initialiase Tag"
-    private lateinit var fileOutputStream : FileOutputStream
-    val file : String = "drinkingData.txt" // Data is not being saved to the Text File
+    private lateinit var selectedActivity : String
+    private var Tag : String = "CollectAccelData"
+    private val file : String = "drinkingData.txt" // text file is empty??
     private lateinit var accelData: List<String>
-    private lateinit var activityNames : ActivitySelectionScreen
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_accelerometer_data)
 
+        // clear the previous accelerometer data :
+        accelerometerData.clear()
+
         // initialise views
         timerTextView = findViewById(R.id.timer_TextView)
         circularProgressBar = findViewById(R.id.circular_ProgressBar)
+
+        // initialise selected Activity from ActivitySelectionScreen
+        selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
+
         // initialise sensor Manger:
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
         // initialise SharedPrefrences
-        sharedPrefs = getSharedPreferences("AccelerometerData", Context.MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
         Log.d(Tag, "Start of Collection")
+        Log.d(Tag, selectedActivity)
+
         // start collecting data when app is launched
         startDataCollection()
-        // show the accelerometer data:
     }
 
     private fun startDataCollection() {
         // register Listener if accelerometer data is not null
         if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(this, accelerometer, 1000000) // 20Hz collection frequency is 50,000 microseoncds
             startTimer()
         } else {
             Toast.makeText(this, "No Accelerometer data", Toast.LENGTH_SHORT).show()
@@ -85,6 +87,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                 sensorManager.unregisterListener(this@CollectAccelerometerData)
                 timerTextView.text = "Finished"
                 circularProgressBar.setProgressWithAnimation(100f)
+                //Log.d(Tag, accelerometerData.toString()) // shows data is in accelerometerData mutable list
+                accelData = retrieveAccelDate()
+                Log.d(Tag, accelData.toString()) // shows data is in sharedPrefrences before it is cleared in navigateToSaveOrRestart() method
                 navigateToSaveOrRestart()
             }
 
@@ -96,47 +101,54 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             val timestamp = System.currentTimeMillis()
-            val formattedData = "$timestamp" + " X: " + event.values[0] + " Y: " + event.values[1] + " Z: " + event.values[2] + "Label "
+            val formattedData = "Time Stamp : $timestamp, X: ${event.values[0]}, Y: ${event.values[1]}, Z: ${event.values[2]}, Activity: " + selectedActivity
             accelerometerData.add(formattedData)
-            accelData = retrieveAccelDate()
-            Log.d(Tag, accelData.toString())
+            val dataAsText = accelerometerData.joinToString("\n")
+            val editor = sharedPrefs.edit()
+            editor.putString("accelerometerData", dataAsText)
+            editor.apply()
         }
     }
 
     /* Goes to Start or Restart Screen */
     private fun navigateToSaveOrRestart() {
-        saveDataToPrefs()
+        // Save data to file before clearing SharedPreferences
+        writeDataToFile(accelerometerData, file)
+        // Clear SharedPreferences for the next session
+        val editor = sharedPrefs.edit()
+        editor.clear().apply()
+
+        // Navigate to the next screen
         val intent = Intent(this, SaveOrRestartActivity::class.java)
         startActivity(intent)
-    }
-
-
-    private fun saveDataToPrefs() {
-        // Convert the accelerometer data list to a single string with each entry on a new line>
-        val dataAsText = accelerometerData.joinToString(separator = "\n")
-        val editor = sharedPrefs.edit()
-        editor.putString("accelerometerData", dataAsText)
-        editor.apply()
-    }
-
-    // helper function to retrieve accelerometer data ;
-    private fun retrieveAccelDate() : List<String> {
-        val dataAsText = sharedPrefs.getString("accelerometerData", null)
-        return dataAsText?.split("\n") ?: emptyList()
     }
 
     private fun writeDataToFile(data: List<String>, fileName: String) {
         try {
             // Convert the data to a single string joining by the end of line
             val dataAsString = data.joinToString(separator = "\n")
-            // Open the file using fileOutPutStream
-            fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE)
-            // Write the file as a ByteArray :
-            fileOutputStream.write(dataAsString.toByteArray())
-            // close the file
-            fileOutputStream.close()
-            Log.d(Tag, "Data Saved to file: $fileName")
 
+            // App-specific external storage, providing a null directory
+            val externalDir : File? = getExternalFilesDir(null)
+
+            if (externalDir != null) {
+                // File object to represent the external storage
+                val externalFile = File(externalDir, fileName)
+
+                // Append data to the file:
+                val fileOutputStream = FileOutputStream(externalFile, true) // true enables append mode
+
+                // Write the data to the file
+                fileOutputStream.write((dataAsString + "\n").toByteArray())
+                fileOutputStream.close()
+
+                // Log succesful writing:
+                Log.d(Tag, "Data Saved to file: $fileName at ${externalFile.absolutePath}")
+
+            } else {
+                Log.d(Tag, "External storage is null")
+
+            }
         } catch (e:Exception) {
             e.printStackTrace()
             Log.e(Tag, "Error writing data to file ${e.message}")
@@ -145,13 +157,19 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     }
 
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        //
+    // helper function to retrieve accelerometer data ;
+    private fun retrieveAccelDate() : List<String> {
+        val dataAsText = sharedPrefs.getString("accelerometerData", null)
+        return dataAsText?.split("\n") ?: emptyList()
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this@CollectAccelerometerData)
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        //
     }
 
 

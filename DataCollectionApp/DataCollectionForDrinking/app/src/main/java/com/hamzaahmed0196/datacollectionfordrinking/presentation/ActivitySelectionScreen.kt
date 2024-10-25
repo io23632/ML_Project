@@ -1,5 +1,6 @@
 package com.hamzaahmed0196.datacollectionfordrinking.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,14 @@ class ActivitySelectionScreen : AppCompatActivity() {
         binding = ActivitySelectionBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        activityAdaptor = ActivityAdaptor(activitiesList)
+        activityAdaptor = ActivityAdaptor(activitiesList) { selectedActivity ->
+            // pass the selected activity to CollectAccelerometerData
+            val intent = Intent(this, CollectAccelerometerData::class.java)
+            intent.putExtra("selectedActivity", selectedActivity)
+            startActivity(intent)
+        }
+
+
         binding.apply {
             mRecyclerView.apply {
                 layoutManager = LinearLayoutManager(this@ActivitySelectionScreen)
