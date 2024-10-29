@@ -29,8 +29,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var sharedPrefs : SharedPreferences
     private lateinit var selectedActivity : String
     private var Tag : String = "CollectAccelData"
-    private val file : String = "drinkingData.txt" // text file is empty??
+    private val file : String = "Data.txt"
     private lateinit var accelData: List<String>
+    private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +63,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private fun startDataCollection() {
         // register Listener if accelerometer data is not null
         if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer, 1000000) // 20Hz collection frequency is 50,000 microseoncds
+            sensorManager.registerListener(this, accelerometer, samplingPeriod) // 20Hz collection frequency is 50,000 microseoncds
             startTimer()
         } else {
             Toast.makeText(this, "No Accelerometer data", Toast.LENGTH_SHORT).show()
@@ -123,6 +124,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         startActivity(intent)
     }
 
+    //TODO: Data to be formatted in Excel format with headings: User Id, Date, TimeStamp, X, Y, Z, Activity
     private fun writeDataToFile(data: List<String>, fileName: String) {
         try {
             // Convert the data to a single string joining by the end of line
