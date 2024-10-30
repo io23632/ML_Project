@@ -16,6 +16,7 @@ import java.io.FileOutputStream
 class SaveOrRestartActivity : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
     private var Tag : String = "Save or Clear Data"
+    private var dataFileName : String = "Data.csv"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
         // Get File Contents:
         if (externalDir !=null) {
 
-            val file = File(externalDir, "drinkingData.txt")
+            val file = File(externalDir, dataFileName)
 
             if (file.exists()) {
                 // read the file contents:
@@ -103,7 +104,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
         // Clear File Contents:
         if (externalDir != null) {
-            val file = File(externalDir, "drinkingData.txt")
+            val file = File(externalDir, dataFileName)
             if (file.exists()) {
                 val fileOutputStream = FileOutputStream(file, false) // false overwrited the file
                 // write empty strings to file

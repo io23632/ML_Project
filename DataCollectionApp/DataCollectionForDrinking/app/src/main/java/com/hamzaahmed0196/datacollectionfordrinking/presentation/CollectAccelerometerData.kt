@@ -29,7 +29,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var sharedPrefs : SharedPreferences
     private lateinit var selectedActivity : String
     private var Tag : String = "CollectAccelData"
-    private val file : String = "Data.txt"
+    private val file : String = "Data.csv"
     private lateinit var accelData: List<String>
     private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
 
@@ -102,7 +102,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             val timestamp = System.currentTimeMillis()
-            val formattedData = "Time Stamp : $timestamp, X: ${event.values[0]}, Y: ${event.values[1]}, Z: ${event.values[2]}, Activity: " + selectedActivity
+            val formattedData = "$timestamp, ${event.values[0]}, ${event.values[1]}, ${event.values[2]}, $selectedActivity"
             accelerometerData.add(formattedData)
             val dataAsText = accelerometerData.joinToString("\n")
             val editor = sharedPrefs.edit()
@@ -129,35 +129,30 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         try {
             // Convert the data to a single string joining by the end of line
             val dataAsString = data.joinToString(separator = "\n")
-
             // App-specific external storage, providing a null directory
             val externalDir : File? = getExternalFilesDir(null)
-
             if (externalDir != null) {
                 // File object to represent the external storage
                 val externalFile = File(externalDir, fileName)
+                val addHeaders = externalFile.length() == 0L
 
-                // Append data to the file:
-                val fileOutputStream = FileOutputStream(externalFile, true) // true enables append mode
-
-                // Write the data to the file
-                fileOutputStream.write((dataAsString + "\n").toByteArray())
-                fileOutputStream.close()
-
+                FileOutputStream(externalFile, true).bufferedWriter().use { writer ->
+                    if(addHeaders) {
+                        writer.write("TimeStamp,X,Y,Z,Activity\n")
+                    }
+                    data.forEach { entry -> writer.write("$entry\n") }
+                }
                 // Log succesful writing:
                 Log.d(Tag, "Data Saved to file: $fileName at ${externalFile.absolutePath}")
 
             } else {
                 Log.d(Tag, "External storage is null")
-
             }
         } catch (e:Exception) {
             e.printStackTrace()
             Log.e(Tag, "Error writing data to file ${e.message}")
         }
-
     }
-
 
     // helper function to retrieve accelerometer data ;
     private fun retrieveAccelDate() : List<String> {
