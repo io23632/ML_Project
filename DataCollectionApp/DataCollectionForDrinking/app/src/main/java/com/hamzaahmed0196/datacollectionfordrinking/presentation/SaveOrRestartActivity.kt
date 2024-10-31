@@ -119,4 +119,9 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
     }
 
+    private fun retrieveAccelData(): List<String> {
+        val dataAsString = sharedPrefs.getString("accelerometerData", null)
+        return dataAsString?.split("\n") ?: emptyList()
+    }
+
 }

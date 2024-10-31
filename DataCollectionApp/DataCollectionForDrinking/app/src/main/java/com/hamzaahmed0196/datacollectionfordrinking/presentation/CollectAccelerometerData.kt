@@ -33,6 +33,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var accelData: List<String>
     private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_accelerometer_data)
@@ -115,9 +116,10 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private fun navigateToSaveOrRestart() {
         // Save data to file before clearing SharedPreferences
         writeDataToFile(accelerometerData, file)
-        // Clear SharedPreferences for the next session
-        val editor = sharedPrefs.edit()
-        editor.clear().apply()
+
+//        // Clear SharedPreferences for the next session
+//        val editor = sharedPrefs.edit()
+//        editor.clear().apply()
 
         // Navigate to the next screen
         val intent = Intent(this, SaveOrRestartActivity::class.java)
