@@ -9,6 +9,7 @@
         android:required="true" /> <!-- Enable Permission -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -18,10 +19,6 @@
         android:theme="@style/Theme.DataCollectionForDrinking">
         <activity
             android:name=".presentation.ActivitySelectionScreen"
-            android:exported="false"
-            android:taskAffinity="" />
-        <activity
-            android:name=".presentation.TestAccelerometer"
             android:exported="false"
             android:taskAffinity="" />
         <activity

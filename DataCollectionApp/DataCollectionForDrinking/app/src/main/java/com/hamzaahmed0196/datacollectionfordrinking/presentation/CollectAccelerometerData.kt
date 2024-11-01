@@ -8,6 +8,9 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.icu.text.DateFormat
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -32,6 +35,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private val file : String = "Data.csv"
     private lateinit var accelData: List<String>
     private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
+    private val id = Build.ID
+    private val currentDate = Calendar.getInstance()
+    private val dateString = DateFormat.getDateInstance(DateFormat.LONG).format(currentDate.time)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +109,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             val timestamp = System.currentTimeMillis()
-            val formattedData = "$timestamp, ${event.values[0]}, ${event.values[1]}, ${event.values[2]}, $selectedActivity"
+            val formattedData = "$id, $dateString,$timestamp, ${event.values[0]}, ${event.values[1]}, ${event.values[2]}, $selectedActivity"
             accelerometerData.add(formattedData)
             val dataAsText = accelerometerData.joinToString("\n")
             val editor = sharedPrefs.edit()
@@ -140,7 +146,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
                 FileOutputStream(externalFile, true).bufferedWriter().use { writer ->
                     if(addHeaders) {
-                        writer.write("TimeStamp,X,Y,Z,Activity\n")
+                        writer.write("ID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
                     }
                     data.forEach { entry -> writer.write("$entry\n") }
                 }

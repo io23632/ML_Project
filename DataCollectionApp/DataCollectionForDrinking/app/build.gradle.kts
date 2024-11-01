@@ -71,7 +71,6 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.circularprogressbar)
-
-
-
+    implementation(libs.okhttp)
+    implementation(libs.gson)
 }
