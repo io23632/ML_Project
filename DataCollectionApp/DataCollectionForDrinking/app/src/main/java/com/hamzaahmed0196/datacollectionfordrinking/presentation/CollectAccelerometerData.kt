@@ -17,6 +17,8 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
@@ -26,19 +28,19 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
-    private val accelerometerData = mutableListOf<String>()
+    private var accelerometerData = mutableListOf<HashMap<String, String>>()
     private lateinit var timerTextView: TextView
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var sharedPrefs : SharedPreferences
     private lateinit var selectedActivity : String
     private var Tag : String = "CollectAccelData"
     private val file : String = "Data.csv"
-    private lateinit var accelData: List<String>
+    private lateinit var accelData : List<Map<String, String>>
     private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
-    private val id = Build.ID
-    private val currentDate = Calendar.getInstance()
-    private val dateString = DateFormat.getDateInstance(DateFormat.LONG).format(currentDate.time)
-
+    private lateinit var deviseId : String
+    private lateinit var dateString : String
+    private lateinit var timestamp : String
+    private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,15 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         timerTextView = findViewById(R.id.timer_TextView)
         circularProgressBar = findViewById(R.id.circular_ProgressBar)
 
+
+        //
+        deviseId = Build.ID
+        val currentDate = Calendar.getInstance()
+        dateString = DateFormat.getDateInstance(DateFormat.LONG).format(currentDate.time)
+        timestamp = System.currentTimeMillis().toString()
+
+
+
         // initialise selected Activity from ActivitySelectionScreen
         selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
 
@@ -58,7 +69,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        // initialise SharedPrefrences
+        // initialise SharedPreferences
         sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
         Log.d(Tag, "Start of Collection")
         Log.d(Tag, selectedActivity)
@@ -97,7 +108,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                 circularProgressBar.setProgressWithAnimation(100f)
                 //Log.d(Tag, accelerometerData.toString()) // shows data is in accelerometerData mutable list
                 accelData = retrieveAccelDate()
-                Log.d(Tag, accelData.toString()) // shows data is in sharedPrefrences before it is cleared in navigateToSaveOrRestart() method
+                Log.d(Tag, accelData.toString()) // shows data is in sharedPreferences before it is cleared in navigateToSaveOrRestart() method
                 navigateToSaveOrRestart()
             }
 
@@ -108,12 +119,30 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
-            val timestamp = System.currentTimeMillis()
-            val formattedData = "$id, $dateString,$timestamp, ${event.values[0]}, ${event.values[1]}, ${event.values[2]}, $selectedActivity"
-            accelerometerData.add(formattedData)
-            val dataAsText = accelerometerData.joinToString("\n")
+            val xAxis = event.values[0].toString()
+            val yAxis = event.values[1].toString()
+            val zAxis = event.values[2].toString()
+
+            // HasMap to hold accelerometer Data:
+            val readingMap = hashMapOf(
+                "deviceID" to deviseId,
+                "date" to dateString,
+                "timeStamp" to timestamp,
+                "x-axis" to xAxis,
+                "y-axis" to yAxis,
+                "z-axis" to zAxis,
+                "activity" to selectedActivity
+            )
+            // Add the reading map to accelerometerData
+            accelerometerData.add(readingMap)
+
+
+            // convert the data to a JSON format
+            val dataAsJSON = gson.toJson(accelerometerData)
+
+            // Add the data to sharedPrefs
             val editor = sharedPrefs.edit()
-            editor.putString("accelerometerData", dataAsText)
+            editor.putString("accelerometerData", dataAsJSON)
             editor.apply()
         }
     }
@@ -123,20 +152,14 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         // Save data to file before clearing SharedPreferences
         writeDataToFile(accelerometerData, file)
 
-//        // Clear SharedPreferences for the next session
-//        val editor = sharedPrefs.edit()
-//        editor.clear().apply()
-
         // Navigate to the next screen
         val intent = Intent(this, SaveOrRestartActivity::class.java)
         startActivity(intent)
     }
 
-    //TODO: Data to be formatted in Excel format with headings: User Id, Date, TimeStamp, X, Y, Z, Activity
-    private fun writeDataToFile(data: List<String>, fileName: String) {
+
+    private fun writeDataToFile(data: List<Map<String, String>>, fileName: String) {
         try {
-            // Convert the data to a single string joining by the end of line
-            val dataAsString = data.joinToString(separator = "\n")
             // App-specific external storage, providing a null directory
             val externalDir : File? = getExternalFilesDir(null)
             if (externalDir != null) {
@@ -145,13 +168,23 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                 val addHeaders = externalFile.length() == 0L
 
                 FileOutputStream(externalFile, true).bufferedWriter().use { writer ->
-                    if(addHeaders) {
-                        writer.write("ID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
+                    if (addHeaders) {
+                        writer.write("DeviseID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
                     }
-                    data.forEach { entry -> writer.write("$entry\n") }
+                    data.forEach { entry ->
+                        val line = "${entry["deviceID"] ?: ""}, " +
+                                "${entry["date"] ?: ""}, " +
+                                "${entry["timeStamp"] ?: ""}, " +
+                                "${entry["x-axis"] ?: ""}, " +
+                                "${entry["y-axis"] ?: ""}, " +
+                                "${entry["z-axis"] ?: ""}, " +
+                                "${entry["activity"] ?: ""}, "
+                        writer.write(line +"\n")
+                    }
+                    // Log successful writing:
+                    Log.d(Tag, "Data Saved to file: $fileName at ${externalFile.absolutePath}")
+
                 }
-                // Log succesful writing:
-                Log.d(Tag, "Data Saved to file: $fileName at ${externalFile.absolutePath}")
 
             } else {
                 Log.d(Tag, "External storage is null")
@@ -163,9 +196,13 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     }
 
     // helper function to retrieve accelerometer data ;
-    private fun retrieveAccelDate() : List<String> {
-        val dataAsText = sharedPrefs.getString("accelerometerData", null)
-        return dataAsText?.split("\n") ?: emptyList()
+    private fun retrieveAccelDate() : List<Map<String, String>> {
+        val accelerometerDataJson = sharedPrefs.getString("accelerometerData", null)
+        val accelerometerDataList : List<Map<String, String>> = gson.fromJson(
+            accelerometerDataJson,
+            object : TypeToken<List<Map<String, String>>>() {}.type
+            )
+        return accelerometerDataList
     }
 
     override fun onPause() {

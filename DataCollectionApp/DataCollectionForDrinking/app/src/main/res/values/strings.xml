@@ -9,7 +9,7 @@
     <string name="enter_activity_name">Enter Activity Name</string>
     <string name="enter_image_url">Enter Image URL</string>
     <string name="Default">Default</string>
-    <string name="save">Save</string>
+    <string name="HTTP">Send Request</string>
     <string name="restart">Restart</string>
     <string name="clear">Clear</string>
 </resources>

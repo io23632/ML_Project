@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,19 +18,25 @@ class SaveOrRestartActivity : AppCompatActivity() {
     private var Tag : String = "Save or Clear Data"
     private var dataFileName : String = "Data.csv"
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_save_or_restart)
 
-        sharedPrefs = applicationContext.getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
 
-        val saveButton: Button = findViewById(R.id.button_Save)
+
+        val accelData = retrieveAccelData()
+        Log.d(Tag, accelData.toString())
+
+
+        val hTTPButton: Button = findViewById(R.id.button_HTTP)
         val restartButton: Button = findViewById(R.id.button_Restart)
         val clearAllDataButton: Button = findViewById(R.id.button_clearAll)
 
         // Handle save Button:
-        saveButton.setOnClickListener {
+        hTTPButton.setOnClickListener {
             goToStart()
         }
 
@@ -53,9 +58,11 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
 
     private fun goToStart() {
+        val httpRequestManagement = HTTPRequestManagement(this)
+        httpRequestManagement.sendDataToDataBase()
         // Go to the start of the main activity screen. Data has been saved.
         val intent = Intent(this, MainActivity::class.java)
-        Toast.makeText(this, "Data Saved", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "HTTP Request Sent", Toast.LENGTH_SHORT).show()
         startActivity(intent)
     }
 

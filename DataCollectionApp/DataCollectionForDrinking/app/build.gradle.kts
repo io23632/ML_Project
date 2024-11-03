@@ -49,6 +49,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("src/main/java", "src/test", "src/test/java")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -66,6 +73,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    implementation(libs.junit.jupiter)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)

@@ -35,3 +35,5 @@ class MainActivity : AppCompatActivity() {
 }
 
 
+//TODO: Make an activity Screen that allows users to input user ID and save it to SharedPrefrences
+
