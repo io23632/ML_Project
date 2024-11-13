@@ -19,7 +19,7 @@ class HTTPRequestManagement(context: Context) {
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
     private val gson = Gson()
     private var postDataList: List<PostData>
-    private val endpointURL = "https://prod-30.westeurope.logic.azure.com:443/workflows/b101ac1b98504a27bb028bbced6a9369/triggers/manual/paths/invoke?api-version=2016-06-01"
+    private val endpointURL = "https://prod-30.westeurope.logic.azure.com:443/workflows/b101ac1b98504a27bb028bbced6a9369/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YGVg81YYkXgrWvFuWfG4oUMfJ8JUIBoMpEmpQe1x3ZQ"
     private var Tag : String = "HTTPRequest"
     private val usefulFunctions = UsefulFunctions()
     private val accelData : List<String> = usefulFunctions.retrieveAccelData(context)
@@ -72,8 +72,6 @@ class HTTPRequestManagement(context: Context) {
             .header("SecurityToken", "23632hbc9")
             .post(requestBody)
             .build()
-
-
         val executor = Executors.newSingleThreadScheduledExecutor()
         executor.execute {
             try {
