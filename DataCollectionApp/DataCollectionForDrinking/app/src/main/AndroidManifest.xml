@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.type.watch" /> <!-- Accessing step decteor and acceloremeter data -->
-
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" /> <!-- Enable Permission -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +16,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.DataCollectionForDrinking">
+        <activity
+            android:name=".presentation.GetUserID"
+            android:exported="false" />
         <activity
             android:name=".presentation.ActivitySelectionScreen"
             android:exported="false"

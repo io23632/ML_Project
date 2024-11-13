@@ -28,8 +28,8 @@ class ActivitySelectionScreen : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
         activityAdaptor = ActivityAdaptor(activitiesList) { selectedActivity ->
-            // pass the selected activity to CollectAccelerometerData
-            val intent = Intent(this, CollectAccelerometerData::class.java)
+            // pass the selected activity to GetUserID Screen
+            val intent = Intent(this, GetUserID::class.java)
             intent.putExtra("selectedActivity", selectedActivity)
             startActivity(intent)
         }
@@ -57,7 +57,5 @@ class ActivitySelectionScreen : AppCompatActivity() {
         }
     }
 
-
-    //TODO: Set up on click events for items so that their string names are extracted and used as lables for CollectAccelerometerData
 
 }

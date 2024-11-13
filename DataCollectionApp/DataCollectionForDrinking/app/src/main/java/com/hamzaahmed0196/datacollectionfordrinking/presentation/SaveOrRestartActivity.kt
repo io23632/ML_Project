@@ -17,6 +17,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
     private var Tag : String = "Save or Clear Data"
     private var dataFileName : String = "Data.csv"
+    private val usefulFunctions = UsefulFunctions()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +26,8 @@ class SaveOrRestartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_save_or_restart)
 
         sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
-
-
-        val accelData = retrieveAccelData()
-        Log.d(Tag, accelData.toString())
+        val accelData : List<String> = usefulFunctions.retrieveAccelData(this@SaveOrRestartActivity)
+        Log.d(Tag, "From SaveOrRestart Screen: $accelData")
 
 
         val hTTPButton: Button = findViewById(R.id.button_HTTP)
@@ -37,7 +36,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
         // Handle save Button:
         hTTPButton.setOnClickListener {
-            goToStart()
+            sendHTTP()
         }
 
         // Handle ReStart Button
@@ -57,9 +56,13 @@ class SaveOrRestartActivity : AppCompatActivity() {
     }
 
 
-    private fun goToStart() {
+    private fun sendHTTP() {
         val httpRequestManagement = HTTPRequestManagement(this)
         httpRequestManagement.sendDataToDataBase()
+        httpRequestManagement.showAccelData()
+        // Clear SharedPreferences:
+        //TODO: Write Test Case to Ensure SharedPrefrences is empty after HTTP button is pressed
+        sharedPrefs.edit().remove("accelerometerData").apply()
         // Go to the start of the main activity screen. Data has been saved.
         val intent = Intent(this, MainActivity::class.java)
         Toast.makeText(this, "HTTP Request Sent", Toast.LENGTH_SHORT).show()
@@ -125,11 +128,6 @@ class SaveOrRestartActivity : AppCompatActivity() {
             Log.d(Tag, "External dir : ${externalDir} is not found")
         }
 
-    }
-
-    private fun retrieveAccelData(): List<String> {
-        val dataAsString = sharedPrefs.getString("accelerometerData", null)
-        return dataAsString?.split("\n") ?: emptyList()
     }
 
 }

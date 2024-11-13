@@ -21,6 +21,9 @@ class HTTPRequestManagement(context: Context) {
     private var postDataList: List<PostData>
     private val endpointURL = "https://prod-30.westeurope.logic.azure.com:443/workflows/b101ac1b98504a27bb028bbced6a9369/triggers/manual/paths/invoke?api-version=2016-06-01"
     private var Tag : String = "HTTPRequest"
+    private val usefulFunctions = UsefulFunctions()
+    private val accelData : List<String> = usefulFunctions.retrieveAccelData(context)
+
     // Retrieve accelerometerData
     private val accelerometerDataJson = sharedPrefs.getString("accelerometerData", null)
     private val accelerometerDataList: List<Map<String, String>> = gson.fromJson(
@@ -28,9 +31,12 @@ class HTTPRequestManagement(context: Context) {
         object : TypeToken<List<Map<String, String>>>() {}.type
     )
 
+
+    // TODO : Add field for User ID
     // Data Class to hold the data
     data class PostData(
         val id: String,
+        val userID : String,
         val date: String,
         val timeStamp: String,
         val xAxis: String,
@@ -44,6 +50,7 @@ class HTTPRequestManagement(context: Context) {
         postDataList = accelerometerDataList.map { x ->
             PostData(
                 id = x["deviceID"] ?: "",
+                userID = x["userID"] ?: "",
                 date = x["date"] ?: "",
                 timeStamp = x["timeStamp"] ?: "",
                 xAxis = x["x-axis"] ?: "",
@@ -61,6 +68,8 @@ class HTTPRequestManagement(context: Context) {
 
         val request = Request.Builder()
             .url(endpointURL)
+            .header("Content-Type", "application/json")
+            .header("SecurityToken", "23632hbc9")
             .post(requestBody)
             .build()
 
@@ -79,5 +88,9 @@ class HTTPRequestManagement(context: Context) {
         }
     }
 
+    // Function to verify HTTP Management class has access to the same accelerometer Data
+    fun showAccelData() {
+        Log.d(Tag, "HTTPS Management Class: $accelData")
+    }
 
 }
