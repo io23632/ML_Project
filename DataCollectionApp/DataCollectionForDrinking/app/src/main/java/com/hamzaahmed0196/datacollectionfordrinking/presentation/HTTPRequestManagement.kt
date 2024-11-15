@@ -63,9 +63,11 @@ class HTTPRequestManagement(context: Context) {
 
     fun sendDataToDataBase() {
         val postDataJson = gson.toJson(postDataList)
+
+        Log.d(Tag, "HTTPS : PostDataJSON: $postDataJson") // Sucessfull ! I can see the data.
+
         val requestBody = postDataJson.toRequestBody("application/json".toMediaType())
         val client = OkHttpClient()
-
         val request = Request.Builder()
             .url(endpointURL)
             .header("Content-Type", "application/json")
@@ -77,7 +79,7 @@ class HTTPRequestManagement(context: Context) {
             try {
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw IOException("Unexpected response")
-                    Log.d(Tag, "Data sent successfully: ${response.body.toString()}")
+                    Log.d(Tag, "Data sent successfully: ${response.body.toString()}") // Also sucessfull
                 }
             }catch (e:IOException) {
                 Log.d(Tag,e.printStackTrace().toString())

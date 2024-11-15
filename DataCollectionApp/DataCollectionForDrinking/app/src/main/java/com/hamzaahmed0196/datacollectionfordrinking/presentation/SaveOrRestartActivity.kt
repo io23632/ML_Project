@@ -59,7 +59,6 @@ class SaveOrRestartActivity : AppCompatActivity() {
     private fun sendHTTP() {
         val httpRequestManagement = HTTPRequestManagement(this)
         httpRequestManagement.sendDataToDataBase()
-        httpRequestManagement.showAccelData()
         // Clear SharedPreferences:
         //TODO: Write Test Case to Ensure SharedPrefrences is empty after HTTP button is pressed
         sharedPrefs.edit().remove("accelerometerData").apply()
