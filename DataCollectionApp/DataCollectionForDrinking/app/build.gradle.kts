@@ -30,6 +30,7 @@ android {
         buildFeatures{
             viewBinding = true
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -61,6 +62,8 @@ android {
             }
         }
     }
+
+
 }
 
 dependencies {
@@ -86,4 +89,9 @@ dependencies {
     implementation(libs.circularprogressbar)
     implementation(libs.okhttp)
     implementation(libs.gson)
+    testImplementation(libs.junit.jupiter.api.v540)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

@@ -22,18 +22,22 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-       //  Start button goes to the CollectAccelerometerData
+       //  Start button goes to the ActivitySelection Screen
         val startButton: Button = findViewById(R.id.button_initiateDrinking)
         startButton.setOnClickListener {
             val intent = Intent(this, ActivitySelectionScreen::class.java)
             startActivity(intent)
         }
 
+        // Start button goes to DummyDataPowerAutomate Screen
+//        val startButton : Button = findViewById(R.id.button_initiateDrinking)
+//        startButton.setOnClickListener {
+//            val intent = Intent(this, DummyDataPowerAutomateScreen::class.java)
+//            startActivity(intent)
+//        }
 
     }
 
 }
 
-
-//TODO: Make an activity Screen that allows users to input user ID and save it to SharedPrefrences
 

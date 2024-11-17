@@ -14,6 +14,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class SaveOrRestartActivity : AppCompatActivity() {
+
     private lateinit var sharedPrefs: SharedPreferences
     private var Tag : String = "Save or Clear Data"
     private var dataFileName : String = "Data.csv"
