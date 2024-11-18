@@ -1,6 +1,5 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.dummyData
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.HTTPManagement.HTTPRequestManagement
 import java.io.File
 import java.io.FileOutputStream
 

@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONActivity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,38 +7,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.databinding.ActivitySelectionRecyclerviewBinding
+import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.GetUserID
 
-class ActivitySelectionScreen : AppCompatActivity() {
+class ActivitySelectionTwo : AppCompatActivity() {
+    private lateinit var binding: ActivitySelectionRecyclerviewBinding
+    private var activitiesList : ArrayList<ActivityModelTwo> = ArrayList()
+    private lateinit var activityAdaptorTwo: ActivityAdaptorTwo
 
-    private lateinit var binding : ActivitySelectionRecyclerviewBinding
-    private var activitiesList : ArrayList<ActivityModel> = ArrayList()
-    private val activityImages : Array<Int> = arrayOf(
-        R.drawable.drinking,
-        R.drawable.smoking,
-        R.drawable.eating
-    )
-    private lateinit var activityAdaptor: ActivityAdaptor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadData()
+        loadActivityNames()
         binding = ActivitySelectionRecyclerviewBinding.inflate(layoutInflater)
+
         enableEdgeToEdge()
         setContentView(binding.root)
-        activityAdaptor = ActivityAdaptor(activitiesList) { selectedActivity ->
-            // pass the selected activity to GetUserID Screen
+        activityAdaptorTwo = ActivityAdaptorTwo(activitiesList) { selectedActivity ->
             val intent = Intent(this, GetUserID::class.java)
             intent.putExtra("selectedActivity", selectedActivity)
             startActivity(intent)
         }
 
-
         binding.apply {
             mRecyclerView.apply {
-                layoutManager = LinearLayoutManager(this@ActivitySelectionScreen)
-                adapter = activityAdaptor
+                layoutManager = LinearLayoutManager(this@ActivitySelectionTwo)
+                adapter = activityAdaptorTwo
             }
         }
 
@@ -50,12 +46,10 @@ class ActivitySelectionScreen : AppCompatActivity() {
     }
 
 
-    private fun loadData(){
-        val activitiesNames : Array<String> = resources.getStringArray(R.array.activitiesNames)
-        for (i in activitiesNames.indices){
-            activitiesList.add(ActivityModel(activityImages[i], activitiesNames[i]))
+    private fun loadActivityNames() {
+        val activityNames : Array<String> = resources.getStringArray(R.array.activitiesNames)
+        for (i in activityNames.indices) {
+            activitiesList.add(ActivityModelTwo(activityNames[i]))
         }
     }
-
-
 }

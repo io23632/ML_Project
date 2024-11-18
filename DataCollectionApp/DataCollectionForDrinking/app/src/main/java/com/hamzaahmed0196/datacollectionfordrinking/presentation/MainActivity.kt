@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONActivity.ActivitySelectionTwo
+
+//import com.hamzaahmed0196.datacollectionfordrinking.presentation.dummyData.DummyDataPowerAutomateScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,11 +28,11 @@ class MainActivity : AppCompatActivity() {
        //  Start button goes to the ActivitySelection Screen
         val startButton: Button = findViewById(R.id.button_initiateDrinking)
         startButton.setOnClickListener {
-            val intent = Intent(this, ActivitySelectionScreen::class.java)
+            val intent = Intent(this, ActivitySelectionTwo::class.java)
             startActivity(intent)
         }
 
-        // Start button goes to DummyDataPowerAutomate Screen
+//        // Start button goes to DummyDataPowerAutomate Screen
 //        val startButton : Button = findViewById(R.id.button_initiateDrinking)
 //        startButton.setOnClickListener {
 //            val intent = Intent(this, DummyDataPowerAutomateScreen::class.java)

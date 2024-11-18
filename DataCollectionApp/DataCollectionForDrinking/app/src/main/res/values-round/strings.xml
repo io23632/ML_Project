@@ -5,6 +5,17 @@
         <item>Drinking</item>
         <item>Smoking</item>
         <item>Eating</item>
+        <item>Walking</item>
+        <item>Running</item>
+        <item>Jogging</item>
+        <item>Sitting</item>
+        <item>Upstairs</item>
+        <item>Downstairs</item>
+        <item>Lying Down</item>
+        <item>Typing</item>
+        <item>Drinking + Walking</item>
+        <item>Smoking + Walking</item>
+        <item>Eating + Walking</item>
     </string-array>
 
 </resources>

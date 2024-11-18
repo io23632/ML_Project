@@ -3,7 +3,7 @@ package com.hamzaahmed0196.datacollectionfordrinking.presentation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hamzaahmed0196.datacollectionfordrinking.databinding.ItemRowBinding
+import com.hamzaahmed0196.datacollectionfordrinking.databinding.ItemRowWithimageBinding
 
 
 class ActivityAdaptor (
@@ -11,11 +11,11 @@ class ActivityAdaptor (
     private val onItemClick : (String) -> Unit // pass the selected activity to the activity selection screen
     ) :
     RecyclerView.Adapter<ActivityAdaptor.ViewHolder>() {
-        private lateinit var binding : ItemRowBinding
+        private lateinit var binding : ItemRowWithimageBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityAdaptor.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        binding = ItemRowBinding.inflate(inflater, parent, false)
+        binding = ItemRowWithimageBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -25,7 +25,7 @@ class ActivityAdaptor (
 
     override fun getItemCount() = items.size
 
-    inner class ViewHolder(itemView: ItemRowBinding) : RecyclerView.ViewHolder(itemView.root) {
+    inner class ViewHolder(itemView: ItemRowWithimageBinding) : RecyclerView.ViewHolder(itemView.root) {
         fun bind(item : ActivityModel) {
             binding.apply {
                 textView.text = item.name
