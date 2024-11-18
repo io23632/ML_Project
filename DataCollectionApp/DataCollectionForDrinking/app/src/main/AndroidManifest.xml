@@ -33,11 +33,11 @@
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.SaveOrRestartActivity"
+            android:name=".presentation.saveOrClearScreen.SaveOrRestartActivity"
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.CollectAccelerometerData"
+            android:name=".presentation.collectAccelerometerData.CollectAccelerometerData"
             android:exported="false"
             android:taskAffinity="" />
 

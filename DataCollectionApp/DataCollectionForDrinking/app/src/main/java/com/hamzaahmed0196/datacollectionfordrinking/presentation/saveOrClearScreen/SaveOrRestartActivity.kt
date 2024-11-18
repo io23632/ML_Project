@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.saveOrClearScreen
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.MainActivity
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions.UsefulFunctions
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.hTTPManagement.HTTPRequestManagement
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod.ActivitySelectionScreen
 import java.io.File

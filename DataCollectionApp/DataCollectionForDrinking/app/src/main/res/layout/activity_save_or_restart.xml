@@ -5,7 +5,7 @@
     android:id="@+id/activity_selection_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.SaveOrRestartActivity">
+    tools:context=".presentation.saveOrClearScreen.SaveOrRestartActivity">
 
 
     <Button

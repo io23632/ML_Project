@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -18,8 +18,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.saveOrClearScreen.SaveOrRestartActivity
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions.UsefulFunctions
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
 import java.io.FileOutputStream

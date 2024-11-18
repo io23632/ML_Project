@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions
 
 import android.content.Context
 import android.content.SharedPreferences

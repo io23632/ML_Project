@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.CollectAccelerometerData
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData.CollectAccelerometerData
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.ParseJSON
 
 

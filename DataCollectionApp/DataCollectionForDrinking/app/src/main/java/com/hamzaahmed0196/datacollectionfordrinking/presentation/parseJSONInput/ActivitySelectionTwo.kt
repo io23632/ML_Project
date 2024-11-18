@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamzaahmed0196.datacollectionfordrinking.databinding.ActivitySelectionRecyclerviewBinding
 import com.hamzaahmed0196.datacollectionfordrinking.R
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.CollectAccelerometerData
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData.CollectAccelerometerData
 
 class ActivitySelectionTwo : AppCompatActivity() {
     private lateinit var binding: ActivitySelectionRecyclerviewBinding
