@@ -68,7 +68,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         // initialise selected Activity from ActivitySelectionScreen
         selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
         // initialise userID from GetUserID Screen
-        userID = intent.getStringExtra("userID") ?: "Unknown User"
+        userID = intent.getStringExtra("UserID") ?: "Unknown User"
 
         // initialise sensor Manger:
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager

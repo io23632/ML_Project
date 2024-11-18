@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONActivity
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

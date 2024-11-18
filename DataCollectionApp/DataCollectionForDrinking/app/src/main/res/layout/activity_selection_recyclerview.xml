@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ActivitySelectionScreen">
+    tools:context=".presentation.watchInputMethod.ActivitySelectionScreen">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mRecyclerView"

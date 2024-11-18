@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod
 
 import android.content.Intent
 import android.os.Bundle

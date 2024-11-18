@@ -21,15 +21,15 @@
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.GetUserID"
+            android:name=".presentation.watchInputMethod.GetUserID"
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.parseJSONActivity.ActivitySelectionTwo"
+            android:name=".presentation.parseJSONInput.ActivitySelectionTwo"
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.ActivitySelectionScreen"
+            android:name=".presentation.watchInputMethod.ActivitySelectionScreen"
             android:exported="false"
             android:taskAffinity="" />
         <activity

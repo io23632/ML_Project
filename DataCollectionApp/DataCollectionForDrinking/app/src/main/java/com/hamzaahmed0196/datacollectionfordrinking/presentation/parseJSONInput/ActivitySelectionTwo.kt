@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONActivity
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamzaahmed0196.datacollectionfordrinking.databinding.ActivitySelectionRecyclerviewBinding
 import com.hamzaahmed0196.datacollectionfordrinking.R
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.GetUserID
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.CollectAccelerometerData
 
 class ActivitySelectionTwo : AppCompatActivity() {
     private lateinit var binding: ActivitySelectionRecyclerviewBinding
@@ -18,19 +18,22 @@ class ActivitySelectionTwo : AppCompatActivity() {
     private val parser = ParseJSON()
     private var activitiesList : ArrayList<ActivityModelTwo> = ArrayList()
     private lateinit var activityAdaptorTwo: ActivityAdaptorTwo
+    private lateinit var userID : String
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loadActivityNames()
+        loadData()
         binding = ActivitySelectionRecyclerviewBinding.inflate(layoutInflater)
 
         enableEdgeToEdge()
         setContentView(binding.root)
         activityAdaptorTwo = ActivityAdaptorTwo(activitiesList) { selectedActivity ->
-            val intent = Intent(this, GetUserID::class.java)
+            val intent = Intent(this, CollectAccelerometerData::class.java)
             intent.putExtra("selectedActivity", selectedActivity)
+            Log.d(Tag, userID)
+            intent.putExtra("UserID", userID)
             startActivity(intent)
         }
 
@@ -49,10 +52,11 @@ class ActivitySelectionTwo : AppCompatActivity() {
     }
 
 
-    private fun loadActivityNames() {
+    private fun loadData() {
         val activityNames : List<String> = parser.parseActivitiesFromJSON()
         for (i in activityNames.indices) {
             activitiesList.add(ActivityModelTwo(activityNames[i]))
         }
+        userID = parser.parseUserIDFromJSON()
     }
 }

@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
-
-
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.CollectAccelerometerData
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.ParseJSON
 
 
 class GetUserID : AppCompatActivity() {
@@ -23,6 +23,7 @@ class GetUserID : AppCompatActivity() {
     private lateinit var selectedActivity : String
     private var userID : String = "Unknown User"
     private var Tag: String = "GetUserID"
+    private val parser = ParseJSON()
 
 
 

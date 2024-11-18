@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,13 +13,13 @@ class ActivityAdaptor (
     RecyclerView.Adapter<ActivityAdaptor.ViewHolder>() {
         private lateinit var binding : ItemRowWithimageBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityAdaptor.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         binding = ItemRowWithimageBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ActivityAdaptor.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
