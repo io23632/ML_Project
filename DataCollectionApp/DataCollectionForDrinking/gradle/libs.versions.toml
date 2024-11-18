@@ -8,6 +8,7 @@ junitJupiterApi = "5.8.1"
 junitJupiterApiVersion = "5.10.0"
 junitVintageEngine = "5.4.0"
 kotlin = "1.9.0"
+kotlinxSerializationJson = "1.2.2"
 mockitoCore = "2.19.0"
 mockwebserver = "4.10.0"
 okhttp = "4.11.0"
@@ -33,6 +34,7 @@ junit-jupiter-api-v5100 = { module = "org.junit.jupiter:junit-jupiter-api", vers
 junit-jupiter-api-v540 = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJunitJupiterApi" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJunitJupiterApi" }
 junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junitVintageEngine" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
