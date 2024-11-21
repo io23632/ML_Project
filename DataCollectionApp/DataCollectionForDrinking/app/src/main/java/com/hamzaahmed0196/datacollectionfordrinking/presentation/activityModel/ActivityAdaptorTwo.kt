@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.activityModel
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,13 +13,13 @@ class ActivityAdaptorTwo (
     RecyclerView.Adapter<ActivityAdaptorTwo.ViewHolderTwo>() {
         private lateinit var binding : ItemRowNoimageBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityAdaptorTwo.ViewHolderTwo {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderTwo {
         val inflater = LayoutInflater.from(parent.context)
         binding = ItemRowNoimageBinding.inflate(inflater, parent, false)
         return ViewHolderTwo(binding)
     }
 
-    override fun onBindViewHolder(holder: ActivityAdaptorTwo.ViewHolderTwo, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolderTwo, position: Int) {
         holder.bind(items[position])
     }
 

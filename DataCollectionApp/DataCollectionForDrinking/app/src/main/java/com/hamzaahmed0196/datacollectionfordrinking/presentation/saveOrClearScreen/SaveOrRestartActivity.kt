@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.MainActivity
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions.UsefulFunctions
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.hTTPManagement.HTTPRequestManagement
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.postRequest.HTTPRequestManagement
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod.ActivitySelectionScreen
 import java.io.File
 import java.io.FileOutputStream

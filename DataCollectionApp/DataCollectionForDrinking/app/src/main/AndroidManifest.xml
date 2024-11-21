@@ -25,7 +25,7 @@
             android:exported="false"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.parseJSONInput.ActivitySelectionTwo"
+            android:name=".presentation.activityModel.ActivitySelectionTwo"
             android:exported="false"
             android:taskAffinity="" />
         <activity

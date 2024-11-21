@@ -1,4 +1,4 @@
-package com.hamzaahmed0196.datacollectionfordrinking.presentation.hTTPManagement
+package com.hamzaahmed0196.datacollectionfordrinking.presentation.postRequest
 
 import android.content.Context
 import com.google.gson.Gson
