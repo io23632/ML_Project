@@ -7,8 +7,8 @@ junitJunitJupiterApi = "5.4.0"
 junitJupiterApi = "5.8.1"
 junitJupiterApiVersion = "5.10.0"
 junitVintageEngine = "5.4.0"
-kotlin = "1.9.0"
-kotlinxSerializationJson = "1.2.2"
+kotlin = "2.0.0"
+kotlinxSerializationJson = "1.7.3"
 kotlinxSerializationJsonVersion = "1.5.1"
 ktorServerContentNegotiation = "2.3.1"
 ktorServerCore = "3.0.1"
@@ -71,4 +71,5 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

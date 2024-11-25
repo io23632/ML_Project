@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0-RC2"
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -51,6 +52,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/*"
             excludes += "META-INF/LICENSE-notice.md"
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/NOTICE.md"

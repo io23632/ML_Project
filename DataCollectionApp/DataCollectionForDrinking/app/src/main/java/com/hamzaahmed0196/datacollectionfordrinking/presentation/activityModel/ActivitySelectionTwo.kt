@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamzaahmed0196.datacollectionfordrinking.databinding.ActivitySelectionRecyclerviewBinding
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData.CollectAccelerometerData
-//import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.ParseJSON
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.startServer
 
 class ActivitySelectionTwo : AppCompatActivity() {
     private lateinit var binding: ActivitySelectionRecyclerviewBinding
@@ -25,8 +25,10 @@ class ActivitySelectionTwo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //loadData()
+        Thread {
+            startServer()
+        }.start()
         binding = ActivitySelectionRecyclerviewBinding.inflate(layoutInflater)
-
         enableEdgeToEdge()
         setContentView(binding.root)
         activityAdaptorTwo = ActivityAdaptorTwo(activitiesList) { selectedActivity ->

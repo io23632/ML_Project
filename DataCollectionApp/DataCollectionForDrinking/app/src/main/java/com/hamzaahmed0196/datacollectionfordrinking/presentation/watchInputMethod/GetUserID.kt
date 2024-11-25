@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData.CollectAccelerometerData
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.ParseJSON
+//import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.ParseJSON
 
 
 class GetUserID : AppCompatActivity() {
@@ -23,7 +23,7 @@ class GetUserID : AppCompatActivity() {
     private lateinit var selectedActivity : String
     private var userID : String = "Unknown User"
     private var Tag: String = "GetUserID"
-    private val parser = ParseJSON()
+    //private val parser = ParseJSON()
 
 
 

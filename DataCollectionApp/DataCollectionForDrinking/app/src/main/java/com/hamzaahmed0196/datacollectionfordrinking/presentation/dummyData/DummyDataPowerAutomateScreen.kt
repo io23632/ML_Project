@@ -1,15 +1,17 @@
 package com.hamzaahmed0196.datacollectionfordrinking.presentation.dummyData
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hamzaahmed0196.datacollectionfordrinking.R
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.postRequest.HTTPRequestManagement
 
 class DummyDataPowerAutomateScreen : AppCompatActivity() {
-
+    private lateinit var Tag :String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,6 +35,6 @@ class DummyDataPowerAutomateScreen : AppCompatActivity() {
 
     private fun sendHTTP() {
         val dummyDataPowerAutomate = DummyDataPowerAutomate(this)
-        dummyDataPowerAutomate.sendDataToPowerAutomateTest()
+        dummyDataPowerAutomate.testRetrieveData()
     }
 }

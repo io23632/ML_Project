@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import android.content.SharedPreferences
 import android.util.Log
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.dummyData.DummyDataPowerAutomate.PostData
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions.UsefulFunctions
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -87,7 +88,6 @@ class HTTPRequestManagement(context: Context) {
 
         }
     }
-
     // Function to verify HTTP Management class has access to the same accelerometer Data
     fun showAccelData() {
         Log.d(Tag, "HTTPS Management Class: $accelData")
