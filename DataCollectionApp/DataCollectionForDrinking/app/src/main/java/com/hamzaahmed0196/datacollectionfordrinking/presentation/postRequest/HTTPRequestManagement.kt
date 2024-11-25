@@ -28,6 +28,7 @@ class HTTPRequestManagement(context: Context) {
 
     // Data Class to hold the data
     data class PostData(
+        val sessionID : String,
         val id: String,
         val userID : String,
         val date: String,
@@ -98,6 +99,7 @@ private fun sendDataToDataBase(postData: PostData) {
 
         return accelerometerDataList.map { x ->
             PostData(
+                sessionID = x["SessionID"] ?: "",
                 id = x["deviceID"] ?: "",
                 userID = x["userID"] ?: "",
                 date = x["date"] ?: "",

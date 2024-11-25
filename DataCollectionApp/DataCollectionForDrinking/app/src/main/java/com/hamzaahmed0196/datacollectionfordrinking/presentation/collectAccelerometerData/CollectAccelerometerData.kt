@@ -44,7 +44,8 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private val samplingPeriod = 50000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
     private lateinit var deviseId : String
     private lateinit var dateString : String
-    private lateinit var timestamp : String
+    private var timestamp : Long = 0
+    private var sessionID : Int = 0
     private val gson = Gson()
     private val usefulFunctions = UsefulFunctions()
 
@@ -59,29 +60,35 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         timerTextView = findViewById(R.id.timer_TextView)
         circularProgressBar = findViewById(R.id.circular_ProgressBar)
 
-
-        //
+        // Generate device ID and timestamp
         deviseId = Build.ID
         val currentDate = Calendar.getInstance()
         dateString = DateFormat.getDateInstance(DateFormat.LONG).format(currentDate.time)
-        timestamp = System.currentTimeMillis().toString()
+        timestamp = System.currentTimeMillis()
 
-        // initialise selected Activity from ActivitySelectionScreen
+
+
+        // Initialise SharedPreferences
+        sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
+
+        // Increment the session counter and save it
+        sessionID = sharedPrefs.getInt("sessionCounter", 0) + 1
+        sharedPrefs.edit().putInt("sessionCounter", sessionID).apply()
+
+        // Initialise other variables
         selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
-        // initialise userID from GetUserID Screen
         userID = intent.getStringExtra("userID") ?: "Unknown User"
 
-        // initialise sensor Manger:
+        // Initialise sensor Manager
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        // initialise SharedPreferences
-        sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
+        // Log session ID and other data
         Log.d(Tag, "Start of Collection")
-        Log.d(Tag, selectedActivity)
-        Log.d(Tag, userID)
+        Log.d(Tag, "Selected Activity is $selectedActivity")
+        Log.d(Tag, "User ID is : $userID")
 
-        // start collecting data when app is launched
+        // Start collecting data when app is launched
         startDataCollection()
     }
 
@@ -129,13 +136,20 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
             val xAxis = event.values[0].toString()
             val yAxis = event.values[1].toString()
             val zAxis = event.values[2].toString()
+            // Extract the last three digits of the timestamp
+            val lastThreeDigits = (timestamp % 1000).toInt()
+            // Combine the last three digits with the session counter for the session ID
+            val fullSessionID = "$lastThreeDigits-$sessionID"
+
+
 
             // HasMap to hold accelerometer Data:
             val readingMap = hashMapOf(
+                "SessionID" to fullSessionID,
                 "deviceID" to deviseId,
                 "userID" to userID,
                 "date" to dateString,
-                "timeStamp" to timestamp,
+                "timeStamp" to timestamp.toString(),
                 "x-axis" to xAxis,
                 "y-axis" to yAxis,
                 "z-axis" to zAxis,
@@ -177,10 +191,12 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
                 FileOutputStream(externalFile, true).bufferedWriter().use { writer ->
                     if (addHeaders) {
-                        writer.write("DeviseID,UserID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
+                        writer.write("SessionID,DeviseID,UserID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
                     }
                     data.forEach { entry ->
-                        val line = "${entry["deviceID"] ?: ""}, " +
+                        val line =
+                                "${entry["SessionID"] ?: ""}, " +
+                                "${entry["deviceID"] ?: ""}, " +
                                 "${entry["userID"] ?: ""}, " +
                                 "${entry["date"] ?: ""}, " +
                                 "${entry["timeStamp"] ?: ""}, " +
@@ -203,6 +219,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
             Log.e(Tag, "Error writing data to file ${e.message}")
         }
     }
+
+    // Function to send accelerometer data from csv file rather than SharedPreferences
+
 
     override fun onPause() {
         super.onPause()
