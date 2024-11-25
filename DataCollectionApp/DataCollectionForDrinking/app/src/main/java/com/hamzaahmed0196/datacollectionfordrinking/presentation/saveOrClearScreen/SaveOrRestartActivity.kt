@@ -31,7 +31,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_save_or_restart)
 
         sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
-        val accelData : List<String> = usefulFunctions.retrieveAccelData(this@SaveOrRestartActivity)
+        val accelData : List<String> = usefulFunctions.retrieveAccelDataAsListString(this@SaveOrRestartActivity)
         Log.d(Tag, "From SaveOrRestart Screen: $accelData")
 
 
@@ -62,14 +62,28 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
 
     private fun sendHTTP() {
-        val httpRequestManagement = HTTPRequestManagement(this)
-        httpRequestManagement.sendDataToDataBase()
-        // Clear SharedPreferences:
-        //TODO: Write Test Case to Ensure SharedPrefrences is empty after HTTP button is pressed
+        val httpRequestManagement = HTTPRequestManagement(context = this@SaveOrRestartActivity)
+
+        // Retrieve accelerometer data as a list of PostData objects
+        val postDataList = httpRequestManagement.retrieverAccelDataAsListPostData()
+
+        // Debug: Log the retrieved data
+        Log.d(Tag, "PostDataList retrieved: $postDataList")
+
+        // Check if the list is empty before sending
+        if (postDataList.isNotEmpty()) {
+            httpRequestManagement.addDataToQueue(postDataList)
+            Toast.makeText(this, "HTTP Request Sent", Toast.LENGTH_SHORT).show()
+        } else {
+            Log.e(Tag, "No data to send.")
+            Toast.makeText(this, "No data to send.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Clear SharedPreferences
         sharedPrefs.edit().remove("accelerometerData").apply()
-        // Go to the start of the main activity screen. Data has been saved.
+
+        // Go to the start of the main activity screen
         val intent = Intent(this, MainActivity::class.java)
-        Toast.makeText(this, "HTTP Request Sent", Toast.LENGTH_SHORT).show()
         startActivity(intent)
     }
 

@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken
 class UsefulFunctions() {
     private val gson : Gson = Gson()
 
-    fun retrieveAccelData(context: Context, key: String? = null) : List<String> {
+    fun retrieveAccelDataAsListString(context: Context, key: String? = null) : List<String> {
         // Initialise shared Preferences to get accelerometer Data
         val sharedPrefs : SharedPreferences = context.getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
         val accelerometerDataJson = sharedPrefs.getString("accelerometerData", null)

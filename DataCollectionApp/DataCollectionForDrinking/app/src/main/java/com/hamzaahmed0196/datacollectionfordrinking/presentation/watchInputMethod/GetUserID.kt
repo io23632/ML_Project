@@ -21,7 +21,7 @@ class GetUserID : AppCompatActivity() {
     private lateinit var tVEdit_getUserID : EditText
     private lateinit var button_submit : Button
     private lateinit var selectedActivity : String
-    private var userID : String = "Unknown User"
+    private lateinit var userID : String
     private var Tag: String = "GetUserID"
     //private val parser = ParseJSON()
 

@@ -41,7 +41,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var userID : String
     private var Tag : String = "CollectAccelData"
     private val file : String = "Data.csv"
-    private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second )
+    private val samplingPeriod = 50000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
     private lateinit var deviseId : String
     private lateinit var dateString : String
     private lateinit var timestamp : String
@@ -69,7 +69,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         // initialise selected Activity from ActivitySelectionScreen
         selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
         // initialise userID from GetUserID Screen
-        userID = intent.getStringExtra("UserID") ?: "Unknown User"
+        userID = intent.getStringExtra("userID") ?: "Unknown User"
 
         // initialise sensor Manger:
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -114,7 +114,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                 timerTextView.text = "Finished"
                 circularProgressBar.setProgressWithAnimation(100f)
                 //Log.d(Tag, accelerometerData.toString()) // shows data is in accelerometerData mutable list
-                val accelData : List<String> = usefulFunctions.retrieveAccelData(this@CollectAccelerometerData, "x-axis")
+                val accelData : List<String> = usefulFunctions.retrieveAccelDataAsListString(this@CollectAccelerometerData, "x-axis")
                 Log.d(Tag, "CollectAccelerometerData Screen:  $accelData")
                 navigateToSaveOrRestart()
             }
