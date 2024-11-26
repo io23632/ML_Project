@@ -11,9 +11,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.MainActivity
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.activityModel.ActivitySelectionTwo
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.usefulFunctions.UsefulFunctions
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.postRequest.HTTPRequestManagement
-import com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod.ActivitySelectionScreen
 import java.io.File
 import java.io.FileOutputStream
 
@@ -36,7 +36,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
 
         val hTTPButton: Button = findViewById(R.id.button_HTTP)
-        val restartButton: Button = findViewById(R.id.button_Restart)
+        val newSessionButton: Button = findViewById(R.id.button_newSession)
         val clearAllDataButton: Button = findViewById(R.id.button_clearAll)
 
         // Handle save Button:
@@ -45,10 +45,8 @@ class SaveOrRestartActivity : AppCompatActivity() {
         }
 
         // Handle ReStart Button
-        restartButton.setOnClickListener {
-            restartSession()
-            val intent = Intent(this, ActivitySelectionScreen::class.java)
-            startActivity(intent)
+        newSessionButton.setOnClickListener {
+            newSession()
         }
 
         // Handle ClearAll Button
@@ -82,8 +80,16 @@ class SaveOrRestartActivity : AppCompatActivity() {
         // Clear SharedPreferences
         sharedPrefs.edit().remove("accelerometerData").apply()
 
-        // Go to the start of the main activity screen
-        val intent = Intent(this, MainActivity::class.java)
+        // Go to the start of the activity selection screen
+        val intent = Intent(this, ActivitySelectionTwo::class.java)
+        startActivity(intent)
+    }
+
+    private fun newSession() {
+        // clear the Shared Preferences:
+        sharedPrefs.edit().remove("accelerometerData").apply()
+        Toast.makeText(this, "No data sent; restarting session", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, ActivitySelectionTwo::class.java)
         startActivity(intent)
     }
 

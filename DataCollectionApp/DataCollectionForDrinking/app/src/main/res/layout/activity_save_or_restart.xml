@@ -20,11 +20,11 @@
         app:layout_constraintVertical_bias="0.111" />
 
     <Button
-        android:id="@+id/button_Restart"
+        android:id="@+id/button_newSession"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/restart"
+        android:text="@string/new_session"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_HTTP" />
@@ -37,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_Restart" />
+        app:layout_constraintTop_toBottomOf="@+id/button_newSession" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

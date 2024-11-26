@@ -11,11 +11,12 @@ import com.hamzaahmed0196.datacollectionfordrinking.databinding.ActivitySelectio
 import com.hamzaahmed0196.datacollectionfordrinking.R
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.collectAccelerometerData.CollectAccelerometerData
 import com.hamzaahmed0196.datacollectionfordrinking.presentation.parseJSONInput.startServer
+import com.hamzaahmed0196.datacollectionfordrinking.presentation.postRequest.HTTPRequestManagement
 
 class ActivitySelectionTwo : AppCompatActivity() {
+
     private lateinit var binding: ActivitySelectionRecyclerviewBinding
     private val Tag : String? = null
-    //private val parser = ParseJSON()
     private var activitiesList : ArrayList<ActivityModelTwo> = ArrayList()
     private lateinit var activityAdaptorTwo: ActivityAdaptorTwo
     private lateinit var userID : String
@@ -24,10 +25,7 @@ class ActivitySelectionTwo : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //loadData()
-        Thread {
-            startServer()
-        }.start()
+        loadData()
         binding = ActivitySelectionRecyclerviewBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
@@ -53,11 +51,13 @@ class ActivitySelectionTwo : AppCompatActivity() {
     }
 
 
-//    private fun loadData() {
-//        val activityNames : List<String> = parser.parseActivitiesFromJSON()
-//        for (i in activityNames.indices) {
-//            activitiesList.add(ActivityModelTwo(activityNames[i]))
-//        }
-//        userID = parser.parseUserIDFromJSON()
-//    }
+    private fun loadData() {
+        val httpRequestManagement = HTTPRequestManagement(this)
+        val activityNames : List<String> = httpRequestManagement.getSavedActivities()
+        for (name in activityNames) {
+            activitiesList.add(ActivityModelTwo(name))
+        }
+        userID = intent.getStringExtra("userID") ?: "GetUserID: UnknownUser"
+
+    }
 }

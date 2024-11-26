@@ -16,4 +16,7 @@
     <string name="button_submit_user_id">Submit</string>
     <string name="write_user_id_here">Enter ID Here</string>
     <string name="test_data">Test Data</string>
+    <string name="configure_activities">Configure Activities</string>
+    <string name="watch">watch</string>
+    <string name="new_session">New Session</string>
 </resources>

@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DataCollectionForDrinking">
         <activity
+            android:name=".presentation.activityModel.ConfigureActivitiesList"
+            android:exported="false"
+            android:taskAffinity="" />
+        <activity
             android:name=".presentation.dummyData.DummyDataPowerAutomateScreen"
             android:exported="false"
             android:taskAffinity="" />
