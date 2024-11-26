@@ -3,6 +3,8 @@ package com.hamzaahmed0196.datacollectionfordrinking.presentation.dummyData
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -82,12 +84,11 @@ class DummyDataPowerAutomate(context: Context) {
     }
 
     fun testRetrieveData() {
-        val postDataJSON = gson .toJson(testData)
-        val requestBody = postDataJSON.toRequestBody("application/json".toMediaType())
+
+        val requestBody = "Sending POST request to configure app".toRequestBody("text/plain".toMediaType())
         val request = Request.Builder()
             .url(endpointURL2)
-            .header("Content-Type", "application/json")
-            .header("SecurityToken", "23632hbc9")
+            .header("Content-Type", "text/plain")
             .post(requestBody)
             .build()
         val executor = Executors.newSingleThreadScheduledExecutor()
@@ -95,7 +96,14 @@ class DummyDataPowerAutomate(context: Context) {
             try {
                 client.newCall(request).execute().use { response ->
                     if(response.isSuccessful) {
-                        Log.d(Tag, "Response body is : ${response.body}")
+                        val jsonData = response.body?.string()
+                        if (jsonData!=null) {
+                            val activitiesList = gson.fromJson(jsonData, List::class.java)
+                            Log.d(Tag, "Response body is : $activitiesList")
+                        } else {
+                            Log.d(Tag, "json body is null")
+                        }
+
                     } else {
                         Log.d(Tag, "Failed to send data ${response.code} - ${response.message}")
                     }

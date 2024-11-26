@@ -25,10 +25,6 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
 import java.io.FileOutputStream
 
-//TODO: Instead
-
-
-
 class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     
     private lateinit var sensorManager: SensorManager
