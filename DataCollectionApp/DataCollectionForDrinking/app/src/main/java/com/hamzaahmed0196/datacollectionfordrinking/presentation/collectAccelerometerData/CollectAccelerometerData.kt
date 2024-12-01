@@ -37,7 +37,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var userID : String
     private var Tag : String = "CollectAccelData"
     private val file : String = "Data.csv"
-    private val samplingPeriod = 10000000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
+    private val samplingPeriod = 100000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
     private lateinit var deviseId : String
     private lateinit var dateString : String
     private var timestamp : Long = 0

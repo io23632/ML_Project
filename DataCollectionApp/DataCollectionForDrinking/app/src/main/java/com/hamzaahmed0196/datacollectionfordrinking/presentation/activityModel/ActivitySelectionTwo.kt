@@ -2,6 +2,7 @@ package com.hamzaahmed0196.datacollectionfordrinking.presentation.activityModel
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,6 +26,8 @@ class ActivitySelectionTwo : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        userID = intent.getStringExtra("userID") ?: ": UnknownUser"
+        Log.d(Tag, "ActivitySelectionTwo.0: $userID")
         loadData()
         binding = ActivitySelectionRecyclerviewBinding.inflate(layoutInflater)
         enableEdgeToEdge()
@@ -32,7 +35,8 @@ class ActivitySelectionTwo : AppCompatActivity() {
         activityAdaptorTwo = ActivityAdaptorTwo(activitiesList) { selectedActivity ->
             val intent = Intent(this, CollectAccelerometerData::class.java)
             intent.putExtra("selectedActivity", selectedActivity)
-            intent.putExtra("UserID", userID)
+            Log.d(Tag, "ActivitySelectionTwo.1: $userID")
+            intent.putExtra("userID", userID)
             startActivity(intent)
         }
 
@@ -57,7 +61,6 @@ class ActivitySelectionTwo : AppCompatActivity() {
         for (name in activityNames) {
             activitiesList.add(ActivityModelTwo(name))
         }
-        userID = intent.getStringExtra("userID") ?: "GetUserID: UnknownUser"
 
     }
 }
