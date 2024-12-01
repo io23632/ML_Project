@@ -13,6 +13,7 @@ import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Vibrator
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
@@ -44,6 +45,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private var sessionID : Int = 0
     private val gson = Gson()
     private val usefulFunctions = UsefulFunctions()
+    private lateinit var vibrator : Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +80,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         // Initialise sensor Manager
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
 
         // Log session ID and other data
         Log.d(Tag, "Start of Collection")
@@ -116,6 +121,8 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                 sensorManager.unregisterListener(this@CollectAccelerometerData)
                 timerTextView.text = "Finished"
                 circularProgressBar.setProgressWithAnimation(100f)
+                // vibrate
+                vibrator.vibrate(200)
                 //Log.d(Tag, accelerometerData.toString()) // shows data is in accelerometerData mutable list
                 val accelData : List<String> = usefulFunctions.retrieveAccelDataAsListString(this@CollectAccelerometerData, "x-axis")
                 Log.d(Tag, "CollectAccelerometerData Screen:  $accelData")
