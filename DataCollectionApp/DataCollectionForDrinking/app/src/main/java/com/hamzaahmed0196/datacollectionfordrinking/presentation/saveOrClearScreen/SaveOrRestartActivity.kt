@@ -20,8 +20,10 @@ import java.io.FileOutputStream
 class SaveOrRestartActivity : AppCompatActivity() {
 
     private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var userPrefs : SharedPreferences
     private var Tag : String = "Save or Clear Data"
     private var dataFileName : String = "Data.csv"
+    private lateinit var userID : String
     private val usefulFunctions = UsefulFunctions()
 
 
@@ -31,6 +33,9 @@ class SaveOrRestartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_save_or_restart)
 
         sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
+        userPrefs = getSharedPreferences("userPreferences", Context.MODE_PRIVATE)
+
+
         val accelData : List<String> = usefulFunctions.retrieveAccelDataAsListString(this@SaveOrRestartActivity)
         Log.d(Tag, "From SaveOrRestart Screen: $accelData")
 
@@ -79,6 +84,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
 
         // Clear SharedPreferences
         sharedPrefs.edit().remove("accelerometerData").apply()
+        userID = userPrefs.getString("userID", "SoR: Unknown User") ?: "SoR: Unknown User"
 
         // Go to the start of the activity selection screen
         val intent = Intent(this, ActivitySelectionTwo::class.java)
@@ -88,6 +94,8 @@ class SaveOrRestartActivity : AppCompatActivity() {
     private fun newSession() {
         // clear the Shared Preferences:
         sharedPrefs.edit().remove("accelerometerData").apply()
+        userID = userPrefs.getString("userID", "SoR Unknown User") ?: "Unknown User"
+
         Toast.makeText(this, "No data sent; restarting session", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, ActivitySelectionTwo::class.java)
         startActivity(intent)

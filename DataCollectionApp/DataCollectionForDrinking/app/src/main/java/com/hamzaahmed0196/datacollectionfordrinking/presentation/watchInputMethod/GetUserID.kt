@@ -1,6 +1,8 @@
 package com.hamzaahmed0196.datacollectionfordrinking.presentation.watchInputMethod
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -21,7 +23,7 @@ class GetUserID : AppCompatActivity() {
     private lateinit var tV_EnterUserID : TextView
     private lateinit var tVEdit_getUserID : EditText
     private lateinit var button_submit : Button
-    // private lateinit var selectedActivity : String
+    private lateinit var userPrefs : SharedPreferences
     private lateinit var userID : String
     private var Tag: String = "GetUserID"
 
@@ -34,11 +36,14 @@ class GetUserID : AppCompatActivity() {
         tVEdit_getUserID = findViewById(R.id.tVEdit_getUserID)!!
         button_submit = findViewById(R.id.button_submit)
 
+        userPrefs = getSharedPreferences("userPreferences", Context.MODE_PRIVATE)
+
         button_submit.setOnClickListener {
             userID = tVEdit_getUserID.text.toString()
-            Log.d(Tag, userID)
+            userPrefs.edit().putString("userID", userID).apply()
+            Log.d(Tag, " GetUserID User ID is : $userID")
             val intent = Intent(this, ActivitySelectionTwo::class.java)
-            intent.putExtra("userID", userID)
+            // intent.putExtra("userID", userID)
             startActivity(intent)
         }
 

@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Vibrator
 import android.util.Log
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var timerTextView: TextView
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var sharedPrefs : SharedPreferences
+    private lateinit var userPrefs: SharedPreferences
     private lateinit var selectedActivity : String
     private lateinit var userID : String
     private var Tag : String = "CollectAccelData"
@@ -68,6 +70,8 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
         // Initialise SharedPreferences
         sharedPrefs = getSharedPreferences("accelerometerData", Context.MODE_PRIVATE)
+        userPrefs = getSharedPreferences("userPreferences", Context.MODE_PRIVATE)
+
 
         // Increment the session counter and save it
         sessionID = sharedPrefs.getInt("sessionCounter", 0) + 1
@@ -75,7 +79,9 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
         // Initialise other variables
         selectedActivity = intent.getStringExtra("selectedActivity") ?: "UnknownActivity"
-        userID = intent.getStringExtra("userID") ?: "Unknown User"
+        //userID = intent.getStringExtra("userID") ?: "Unknown User"
+        userID = userPrefs.getString("userID", "CA: Unknown User") ?: "CA: Unknown User"
+
 
         // Initialise sensor Manager
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -87,8 +93,10 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
         // Log session ID and other data
         Log.d(Tag, "Start of Collection")
         Log.d(Tag, "Selected Activity is $selectedActivity")
-        Log.d(Tag, "User ID is : $userID")
+        Log.d(Tag, "CA User ID is : $userID")
 
+        // Flag to keep watch active while app is in use:
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Start collecting data when app is launched
         startDataCollection()
     }
