@@ -13,6 +13,7 @@ import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Environment
 import android.os.Vibrator
 import android.util.Log
 import android.view.WindowManager
@@ -40,7 +41,7 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
     private lateinit var userID : String
     private var Tag : String = "CollectAccelData"
     private val file : String = "Data.csv"
-    private val samplingPeriod = 100000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
+    private val samplingPeriod = 50000 // Samples one data point every second. Should be 50,000 (for 20 samples per second ) / 20 samples: 10000000
     private lateinit var deviseId : String
     private lateinit var dateString : String
     private var timestamp : Long = 0
@@ -193,20 +194,23 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
 
     private fun writeDataToFile(data: List<Map<String, String>>, fileName: String) {
         try {
-            // App-specific external storage, providing a null directory
-            val externalDir : File? = getExternalFilesDir(null)
-            if (externalDir != null) {
-                // File object to represent the external storage
-                val externalFile = File(externalDir, fileName)
-                val addHeaders = externalFile.length() == 0L
+            // Get public directory for Documents
+            val publicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            if (!publicDir.exists()) {
+                publicDir.mkdirs() // Create the directory if it doesn't exist
+            }
 
-                FileOutputStream(externalFile, true).bufferedWriter().use { writer ->
-                    if (addHeaders) {
-                        writer.write("SessionID,DeviseID,UserID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
-                    }
-                    data.forEach { entry ->
-                        val line =
-                                "${entry["SessionID"] ?: ""}, " +
+            // File object to represent the public storage
+            val publicFile = File(publicDir, fileName)
+            val addHeaders = publicFile.length() == 0L
+
+            FileOutputStream(publicFile, true).bufferedWriter().use { writer ->
+                if (addHeaders) {
+                    writer.write("SessionID,DeviseID,UserID,Date,Year,TimeStamp,X,Y,Z,Activity\n")
+                }
+                data.forEach { entry ->
+                    val line =
+                        "${entry["SessionID"] ?: ""}, " +
                                 "${entry["deviceID"] ?: ""}, " +
                                 "${entry["userID"] ?: ""}, " +
                                 "${entry["date"] ?: ""}, " +
@@ -215,21 +219,17 @@ class CollectAccelerometerData : AppCompatActivity(), SensorEventListener {
                                 "${entry["y-axis"] ?: ""}, " +
                                 "${entry["z-axis"] ?: ""}, " +
                                 "${entry["activity"] ?: ""}, "
-                        writer.write(line +"\n")
-                    }
-                    // Log successful writing:
-                    Log.d(Tag, "Data Saved to file: $fileName at ${externalFile.absolutePath}")
-
+                    writer.write(line + "\n")
                 }
-
-            } else {
-                Log.d(Tag, "External storage is null")
+                // Log successful writing
+                Log.d(Tag, "Data Saved to file: $fileName at ${publicFile.absolutePath}")
             }
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             Log.e(Tag, "Error writing data to file ${e.message}")
         }
     }
+
 
     // Function to send accelerometer data from csv file rather than SharedPreferences
 

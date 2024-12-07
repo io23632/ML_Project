@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -39,6 +41,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
         val accelData : List<String> = usefulFunctions.retrieveAccelDataAsListString(this@SaveOrRestartActivity)
         Log.d(Tag, "From SaveOrRestart Screen: $accelData")
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val hTTPButton: Button = findViewById(R.id.button_HTTP)
         val newSessionButton: Button = findViewById(R.id.button_newSession)
@@ -143,11 +146,11 @@ class SaveOrRestartActivity : AppCompatActivity() {
         // Clear Shared Pref:
         sharedPrefs.edit().remove("accelerometerData").apply()
 
-        val externalDir : File? = getExternalFilesDir(null)
+        val publicDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
 
         // Clear File Contents:
-        if (externalDir != null) {
-            val file = File(externalDir, dataFileName)
+        if (publicDir != null) {
+            val file = File(publicDir, dataFileName)
             if (file.exists()) {
                 val fileOutputStream = FileOutputStream(file, false) // false overwrited the file
                 // write empty strings to file
@@ -157,7 +160,7 @@ class SaveOrRestartActivity : AppCompatActivity() {
                 Toast.makeText(this, "File: $file not found", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Log.d(Tag, "External dir : ${externalDir} is not found")
+            Log.d(Tag, "External dir : ${publicDir} is not found")
         }
 
     }
